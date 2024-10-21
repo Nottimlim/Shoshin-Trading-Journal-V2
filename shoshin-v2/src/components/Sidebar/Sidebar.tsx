@@ -1,33 +1,35 @@
 import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { NavItem } from '@/types/NavItem';
 
 interface SidebarProps {
-  navItems: NavItem[];
+  isOpen: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ navItems }) => {
-  const router = useRouter();
-
+const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   return (
-    <aside className="bg-gray-800 text-white w-64 min-h-screen p-4">
-      <nav>
-        {navItems.map((item) => (
-          <Link 
-            key={item.href} 
-            href={item.href}
-            className={`block py-2.5 px-4 rounded transition duration-200 ${
-              router.pathname === item.href 
-                ? 'bg-gray-700 text-white' 
-                : 'text-gray-400 hover:bg-gray-700 hover:text-white'
-            }`}
-          >
-            {item.label}
+    <div 
+      id="sidebar" 
+      className={`bg-blue-600 text-white w-64 flex flex-col fixed h-full z-40 transition-all duration-300 ease-in-out ${
+        isOpen ? 'left-0' : '-left-64'
+      }`}
+    >
+      <div className="py-7 px-4 flex-grow">
+        <h2 className="text-2xl font-bold mb-4 text-center mt-8">Menu</h2>
+        <hr className="border-t border-white w-full mb-6" />
+        <nav className="w-full">
+          <Link href="/dashboard" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 text-center mb-4">
+            Dashboard
           </Link>
-        ))}
-      </nav>
-    </aside>
+          <Link href="/trades" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 text-center mb-4">
+            Trades
+          </Link>
+          <Link href="/trades/new" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 text-center mb-4">
+            New Trade
+          </Link>
+          {/* Add login/logout links here based on auth state */}
+        </nav>
+      </div>
+    </div>
   );
 };
 

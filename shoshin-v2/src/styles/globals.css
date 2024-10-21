@@ -19,3 +19,11 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+#sidebar {
+  transition: left 0.3s ease-in-out;
+}
+
+#content {
+  transition: margin-left 0.3s ease-in-out;
+}
