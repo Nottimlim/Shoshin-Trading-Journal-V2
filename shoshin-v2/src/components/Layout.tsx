@@ -1,48 +1,51 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  const navItems = [
+    { href: '/', label: 'Dashboard', icon: '📊' },
+    { href: '/trades', label: 'Trades', icon: '💹' },
+    { href: '/journal', label: 'Journal', icon: '📓' },
+    { href: '/analytics', label: 'Analytics', icon: '📈' },
+  ];
 
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <div 
-        className={`bg-gray-800 text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition duration-200 ease-in-out md:relative md:translate-x-0`}
-      >
+      <aside className={`bg-gray-800 text-white w-64 min-h-screen p-4 ${isSidebarOpen ? '' : '-ml-64'}`}>
+        <div className="flex justify-between items-center mb-6">
+          <span className="text-2xl font-semibold">Shoshin</span>
+          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-white">
+            {isSidebarOpen ? '◀' : '▶'}
+          </button>
+        </div>
         <nav>
-          <Link href="/" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">
-            Dashboard
-          </Link>
-          <Link href="/trades" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">
-            Trades
-          </Link>
-          <Link href="/journal" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">
-            Journal
-          </Link>
-          <Link href="/analytics" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">
-            Analytics
-          </Link>
+          {navItems.map((item) => (
+            <Link 
+              key={item.href} 
+              href={item.href}
+              className={`flex items-center py-2.5 px-4 rounded transition duration-200 ${
+                router.pathname === item.href 
+                  ? 'bg-gray-700 text-white' 
+                  : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+              }`}
+            >
+              <span className="mr-2">{item.icon}</span>
+              {item.label}
+            </Link>
+          ))}
         </nav>
-      </div>
+      </aside>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="bg-white shadow-md">
-          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-gray-900">Shoshin Trading Journal</h1>
-            <button 
-              onClick={toggleSidebar}
-              className="md:hidden bg-gray-800 text-white p-2 rounded-md"
-            >
-              {sidebarOpen ? 'Close' : 'Menu'}
-            </button>
+          <div className="max-w-7xl mx-auto py-4 px-4">
+            <h1 className="text-2xl font-semibold text-gray-900">Shoshin Trading Journal</h1>
           </div>
         </header>
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
