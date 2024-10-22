@@ -14,7 +14,7 @@ I ended up creating this application because as a trader myself I wanted to crea
 
 ## Tech Stack
 
-- Next.js
+- Node.js
 - React
 - Tailwind CSS
 - TypeScript
